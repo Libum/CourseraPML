@@ -33,12 +33,17 @@ Subsetting "#DIV/0!" values with NA's (cleaning data) in the training set
         }
 }
 ```
-Removing variables, which have  NA's
+Removing variables, which have  NA's or are factors
 ```{r}
 z = colSums(sapply(train, is.na))>= 1 
 z = as.vector(z)
 z = z==FALSE
 train = train[,z]
+z = which(as.vector(sapply(train, class))=="factor")
+train = train[,-z]
+y = names(train)
+y = y[1:56]
+test = test[,y]
 
 ```
 
@@ -46,7 +51,11 @@ train = train[,z]
 #Creation of algorithm 
 ```{r}
 library(caret)
-model = train(classe~., data = train, method = "rf")
+model = train(train[,-57], train[,57],
+                 method = "knn",
+                 preProcess = c("center", "scale"),
+                 tuneLength = 10,
+                 trControl = trainControl(method = "cv"))
 ```
 Algorithm description:
 ```{r, echo=FALSE}
