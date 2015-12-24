@@ -53,6 +53,11 @@ Algorithm description:
 model
 ```
 
+#Prediction on the test set
+```{r}
+answers = predict(model, newdata = test)
+```
+
 #Results saving
 ```{r, eval=FALSE}
 pml_write_files = function(x){
