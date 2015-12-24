@@ -11,7 +11,7 @@ Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible t
 The goal of your project is to predict the manner in which they did the exercise. This is the "classe" variable in the training set. You may use any of the other variables to predict with. You should create a report describing how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases. 
 
 #Data loading
-```{r}
+```{r, eval=FALSE}
 train = read.csv("pml-training.csv")
 test = read.csv("pml-testing.csv")
 ```
@@ -20,7 +20,7 @@ test = read.csv("pml-testing.csv")
 Firstly I want to remove from testing set variables, which have too many NA's. 
 
 Subsetting "#DIV/0!" values with NA's (cleaning data) in the training set
-```{r}
+```{r, eval=FALSE}
 {
         for(i in 1:160){
                 x = train[,i]=="#DIV/0!"
@@ -34,7 +34,7 @@ Subsetting "#DIV/0!" values with NA's (cleaning data) in the training set
 }
 ```
 Removing variables, which have  NA's or are factors
-```{r}
+```{r, eval=FALSE}
 z = colSums(sapply(train, is.na))>= 1 
 z = as.vector(z)
 z = z==FALSE
@@ -51,7 +51,7 @@ test = test[,y]
 #Creation of algorithm 
 I decided to use k-nearest neighbours method, becouse I do not expect relationshipt between dependent and independent variables to be linear. This is also classification problem, so KNN seems to be a good method for that. I tried to control my out-of-sample error by using cross-validation, so model should not be overfitted. 
 
-```{r}
+```{r, eval=FALSE}
 library(caret)
 model = train(train[,-57], train[,57],
                  method = "knn",
@@ -60,13 +60,8 @@ model = train(train[,-57], train[,57],
                  trControl = trainControl(method = "cv"))
 ```
 
-Algorithm description:
-```{r, echo=FALSE}
-model
-```
-
 #Prediction on the test set
-```{r}
+```{r, eval=FALSE}
 answers = predict(model, newdata = test)
 ```
 
