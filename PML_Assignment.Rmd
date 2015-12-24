@@ -17,6 +17,8 @@ test = read.csv("pml-testing.csv")
 ```
 
 #Preprocessing
+Firstly I want to remove from testing set variables, which have too many NA's. 
+
 Subsetting "#DIV/0!" values with NA's (cleaning data) in the training set
 ```{r}
 {
@@ -31,24 +33,35 @@ Subsetting "#DIV/0!" values with NA's (cleaning data) in the training set
         }
 }
 ```
-Removing variables, which have mostly NA's
+Removing variables, which have  NA's
 ```{r}
-z = colSums(sapply(train, is.na))==19216 #19216 is number of NA's in the "worst" variables
+z = colSums(sapply(train, is.na))>= 1 
 z = as.vector(z)
 z = z==FALSE
 train = train[,z]
 
-z = colSums(sapply(train, is.na))==406 #406 is number of NA's in the "bad" variables
-z = as.vector(z)
-z = z==FALSE
-train = train[,z]
 ```
 
 
 #Creation of algorithm 
 ```{r}
 library(caret)
-model = train(classe~., data = train, method = "rf", na.action = na.omit)
+model = train(classe~., data = train, method = "rf")
+```
+Algorithm description:
+```{r, echo=FALSE}
+model
 ```
 
-
+#Results saving
+```{r, eval=FALSE}
+pml_write_files = function(x){
+  n = length(x)
+  for(i in 1:n){
+    filename = paste0("problem_id_",i,".txt")
+    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
+  }
+}
+setwd("C:/Users/Lenovo/Documents/Coursera Data Science Specialization/Practical Machine Learning/CourseraPML/Results")
+pml_write_files(answers)
+```
