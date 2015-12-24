@@ -17,7 +17,7 @@ test = read.csv("pml-testing.csv")
 ```
 
 #Preprocessing
-Subsetting "#DIV/0!" values with NA's (cleaning data)
+Subsetting "#DIV/0!" values with NA's (cleaning data) in the training set
 ```{r}
 {
         for(i in 1:160){
@@ -33,3 +33,9 @@ Subsetting "#DIV/0!" values with NA's (cleaning data)
 ```
 
 #Creation of algorithm 
+```{r}
+library(caret)
+model = train(Classes~., data = train, method = "rf")
+```
+
+
