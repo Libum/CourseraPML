@@ -49,6 +49,8 @@ test = test[,y]
 
 
 #Creation of algorithm 
+I decided to use k-nearest neighbours method, becouse I do not expect relationshipt between dependent and independent variables to be linear. This is also classification problem, so KNN seems to be a good method for that. I tried to control my out-of-sample error by using cross-validation, so model should not be overfitted. 
+
 ```{r}
 library(caret)
 model = train(train[,-57], train[,57],
@@ -57,6 +59,7 @@ model = train(train[,-57], train[,57],
                  tuneLength = 10,
                  trControl = trainControl(method = "cv"))
 ```
+
 Algorithm description:
 ```{r, echo=FALSE}
 model
