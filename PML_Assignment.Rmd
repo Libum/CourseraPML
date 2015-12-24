@@ -31,11 +31,24 @@ Subsetting "#DIV/0!" values with NA's (cleaning data) in the training set
         }
 }
 ```
+Removing variables, which have mostly NA's
+```{r}
+z = colSums(sapply(train, is.na))==19216 #19216 is number of NA's in the "worst" variables
+z = as.vector(z)
+z = z==FALSE
+train = train[,z]
+
+z = colSums(sapply(train, is.na))==406 #406 is number of NA's in the "bad" variables
+z = as.vector(z)
+z = z==FALSE
+train = train[,z]
+```
+
 
 #Creation of algorithm 
 ```{r}
 library(caret)
-model = train(Classes~., data = train, method = "rf")
+model = train(classe~., data = train, method = "rf", na.action = na.omit)
 ```
 
 
